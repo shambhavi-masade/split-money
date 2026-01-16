@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{{ group.name }}</title>
+
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='group.css') }}"
+    />
+  </head>
+  <body>
+    <div class="group-container">
+      <h2>{{ group.name }}</h2>
+      <h3>Add Friend to Group</h3>
+      <form method="POST" action="/add-friend-to-group/{{ group.id }}">
+        <input
+          type="email"
+          name="email"
+          placeholder="Friend's email"
+          required
+        />
+        <button>Add</button>
+      </form>
+
+      <h3>Add Expense</h3>
+      <form method="POST" action="/group/{{ group.id }}/add-expense">
+        <input
+          type="text"
+          name="description"
+          placeholder="Description"
+          required
+        />
+        <input type="number" name="amount" placeholder="Amount" required />
+
+        <p>Paid By</p>
+        <select name="paid_by" required>
+          {% for m in members %}
+          <option value="{{ m.id }}">{{ m.name }}</option>
+          {% endfor %}
+        </select>
+
+        <button>Add Expense</button>
+      </form>
+
+      <hr />
+
+      <h3>Expenses</h3>
+
+      <table border="1" cellpadding="8">
+        <tr>
+          <th>Description</th>
+          <th>Amount (₹)</th>
+          <th>Paid By</th>
+        </tr>
+
+        {% for e in expenses %}
+        <tr>
+          <td>{{ e.description }}</td>
+          <td>{{ e.amount }}</td>
+          <td>{{ e.paid_by }}</td>
+        </tr>
+        {% else %}
+        <tr>
+          <td colspan="3">No expenses yet</td>
+        </tr>
+        {% endfor %}
+      </table>
+
+      <hr />
+
+      <h3>Settlement</h3>
+      <ul>
+        {% for s in settlements %} {% if s.balance > 0 %}
+        <li>{{ s.name }} gets ₹{{ s.balance }}</li>
+        {% elif s.balance < 0 %}
+        <li>{{ s.name }} owes ₹{{ -s.balance }}</li>
+        {% else %}
+        <li>{{ s.name }} is settled</li>
+        {% endif %} {% endfor %}
+      </ul>
+
+      <br />
+      <a href="/">← Back to Dashboard</a>
+    </div>
+  </body>
+</html>

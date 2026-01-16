@@ -1,0 +1,175 @@
+/* =========================
+   Group Detail Page
+========================= */
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #f4f6f8;
+    font-family: "Segoe UI", Tahoma, sans-serif;
+    color: #333;
+}
+
+/* Main container */
+.group-container {
+    max-width: 900px;
+    margin: 40px auto;
+    background: #ffffff;
+    padding: 32px;
+    border-radius: 14px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+}
+
+/* Headings */
+.group-container h2 {
+    color: #4f46e5;
+    margin-bottom: 12px;
+}
+
+.group-container h3 {
+    margin-top: 30px;
+    margin-bottom: 12px;
+    color: #222;
+}
+
+/* -------------------------
+   Add Expense Form
+-------------------------- */
+
+form {
+    display: grid;
+    gap: 12px;
+    margin-top: 10px;
+}
+
+form input,
+form select {
+    padding: 10px 12px;
+    border-radius: 8px;
+    border: 1px solid #d1d5db;
+    font-size: 14px;
+}
+
+form input:focus,
+form select:focus {
+    outline: none;
+    border-color: #4f46e5;
+}
+
+form button {
+    width: fit-content;
+    padding: 10px 18px;
+    background-color: #4f46e5;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+form button:hover {
+    background-color: #4338ca;
+}
+
+/* -------------------------
+   Table (Expenses)
+-------------------------- */
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 12px;
+    background: #ffffff;
+}
+
+table th {
+    background-color: #eef2ff;
+    color: #1f2937;
+    font-weight: 600;
+}
+
+table th,
+table td {
+    padding: 12px;
+    border: 1px solid #e5e7eb;
+    text-align: left;
+}
+
+table tr:nth-child(even) {
+    background-color: #f9fafb;
+}
+
+/* -------------------------
+   Settlement Section
+-------------------------- */
+
+ul {
+    list-style: none;
+    padding-left: 0;
+    margin-top: 10px;
+}
+
+ul li {
+    padding: 10px 12px;
+    background: #f9fafb;
+    border-radius: 8px;
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+/* Settlement colors */
+ul li:has(span.gets),
+.gets {
+    color: #16a34a;
+}
+
+ul li:has(span.owes),
+.owes {
+    color: #dc2626;
+}
+
+ul li:has(span.settled),
+.settled {
+    color: #6b7280;
+}
+
+/* -------------------------
+   Divider
+-------------------------- */
+
+hr {
+    border: none;
+    border-top: 1px solid #e5e7eb;
+    margin: 30px 0;
+}
+
+/* -------------------------
+   Back link
+-------------------------- */
+
+a {
+    text-decoration: none;
+    color: #4f46e5;
+    font-weight: 500;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* -------------------------
+   Responsive
+-------------------------- */
+
+@media (max-width: 768px) {
+    .group-container {
+        margin: 20px;
+        padding: 20px;
+    }
+
+    table th,
+    table td {
+        font-size: 13px;
+        padding: 8px;
+    }
+}

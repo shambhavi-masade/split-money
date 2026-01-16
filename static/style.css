@@ -1,0 +1,289 @@
+/* ------------------
+   Global Reset
+------------------ */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", sans-serif;
+}
+
+body {
+  background-color: #f4f6f8;
+  color: #333;
+}
+
+/* ------------------
+   Navbar
+------------------ */
+.navbar {
+  background: #2c3e50;
+  color: white;
+  padding: 15px 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navbar h1 {
+  font-size: 22px;
+}
+
+.navbar nav a,
+.navbar nav span {
+  color: white;
+  margin-left: 20px;
+  text-decoration: none;
+  font-size: 15px;
+}
+
+.navbar nav a:hover,
+.navbar nav a.active {
+  text-decoration: underline;
+}
+
+/* ------------------
+   Main Content
+------------------ */
+.content {
+  max-width: 1100px;
+  margin: 30px auto;
+  padding: 0 20px;
+}
+
+.content h2 {
+  margin-bottom: 20px;
+}
+
+/* ------------------
+   Buttons
+------------------ */
+.actions {
+  margin-bottom: 20px;
+}
+
+.actions button {
+  background: #3498db;
+  border: none;
+  color: white;
+  padding: 10px 16px;
+  margin-right: 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.actions button:hover {
+  background: #2980b9;
+}
+
+/* ------------------
+   Cards
+------------------ */
+.card {
+  background: white;
+  padding: 18px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  margin-bottom: 20px;
+}
+
+/* ------------------
+   Forms
+------------------ */
+.forms {
+  margin-bottom: 30px;
+}
+
+form h3 {
+  margin-bottom: 10px;
+}
+
+form input[type="text"],
+form input[type="number"] {
+  width: 100%;
+  padding: 10px;
+  margin: 8px 0;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+form label {
+  font-size: 14px;
+}
+
+form button {
+  background: #27ae60;
+  border: none;
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+form button:hover {
+  background: #219150;
+}
+
+/* ------------------
+   Hide Forms
+------------------ */
+.hidden {
+  display: none;
+}
+
+/* ------------------
+   Stats Section
+------------------ */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
+  margin-bottom: 30px;
+}
+
+.stats .card {
+  text-align: center;
+}
+
+.stats h4 {
+  color: #555;
+  margin-bottom: 5px;
+}
+
+.stats p {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+/* ------------------
+   Lists
+------------------ */
+.list {
+  list-style: none;
+}
+
+.list li {
+  background: white;
+  padding: 12px 15px;
+  border-radius: 6px;
+  margin-bottom: 10px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+}
+
+.list li a {
+  text-decoration: none;
+  color: #3498db;
+  font-weight: 500;
+}
+
+.list li a:hover {
+  text-decoration: underline;
+}
+
+/* ------------------
+   Responsive
+------------------ */
+@media (max-width: 600px) {
+  .navbar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .navbar nav {
+    margin-top: 10px;
+  }
+}
+/* ------------------
+   Animated Toggle
+------------------ */
+.card {
+  transition: all 0.35s ease;
+}
+
+/* hidden state */
+.hidden {
+  opacity: 0;
+  transform: translateY(-15px) scale(0.98);
+  pointer-events: none;
+  max-height: 0;
+  overflow: hidden;
+}
+
+/* visible state */
+.show {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+  max-height: 500px;
+}
+/* ------------------
+   Animated Toggle
+------------------ */
+.card {
+  transition: opacity 0.35s ease, transform 0.35s ease, max-height 0.4s ease;
+}
+
+/* hidden state */
+.hidden {
+  opacity: 0;
+  transform: translateY(-15px) scale(0.98);
+  pointer-events: none;
+  max-height: 0;
+  overflow: hidden;
+}
+
+/* visible state */
+.show {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+  max-height: 600px;
+}
+
+/* ------------------
+   Staggered form fields
+------------------ */
+.card.show input,
+.card.show label,
+.card.show button,
+.card.show p {
+  animation: fadeSlide 0.4s ease forwards;
+}
+
+@keyframes fadeSlide {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ------------------
+   Button Ripple Effect
+------------------ */
+.actions button {
+  position: relative;
+  overflow: hidden;
+}
+
+.actions button::after {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 0;
+  background: rgba(255, 255, 255, 0.4);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.4s ease, height 0.4s ease;
+  pointer-events: none;
+}
+
+.actions button:active::after {
+  width: 200px;
+  height: 200px;
+}

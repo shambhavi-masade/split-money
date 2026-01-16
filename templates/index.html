@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Expense Splitter</title>
+
+    <link rel="stylesheet" href="../static/style.css" />
+  </head>
+  <body>
+    <!-- Top Navbar -->
+    <header class="navbar">
+      <h1>Expense Splitter</h1>
+
+      <nav>
+        <span class="user-name">Hi, {{ user_name }}</span>
+        <a href="/" class="active">Dashboard</a>
+        <a href="/logout">Logout</a>
+      </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="content">
+      <h2>Dashboard</h2>
+
+      <!-- Action Buttons -->
+      <div class="actions">
+        <button onclick="toggleForm('expenseForm')">➕ Add Expense</button>
+        <button onclick="toggleForm('groupForm')">👥 Add Group</button>
+      </div>
+
+      <!-- Forms -->
+      <div class="forms">
+        <!-- Add Expense -->
+        <form
+          id="expenseForm"
+          class="card hidden"
+          method="POST"
+          action="/add-expense"
+        >
+          <h3>Add Expense</h3>
+          <input
+            type="text"
+            name="description"
+            placeholder="Description"
+            required
+          />
+          <input type="number" name="amount" placeholder="Amount ₹" required />
+          <button type="submit">Add</button>
+        </form>
+
+        <!-- Add Group -->
+        <form
+          id="groupForm"
+          class="card hidden"
+          method="POST"
+          action="/add-group"
+        >
+          <input
+            type="text"
+            name="group_name"
+            placeholder="Group Name"
+            required
+          />
+
+          <p>Select Members</p>
+          {% for f in friends %}
+          <label>
+            <input type="checkbox" name="members" value="{{ f.id }}" />
+            {{ f.name }} </label
+          ><br />
+          {% else %}
+          <p>Add friends first</p>
+          {% endfor %}
+
+          <button>Create Group</button>
+        </form>
+
+       
+
+      <!-- Stats (static for now) -->
+      <section class="stats">
+        <div class="card">
+          <h4>Total Expenses</h4>
+          <p>₹0</p>
+        </div>
+        <div class="card">
+          <h4>You are owed</h4>
+          <p>₹0</p>
+        </div>
+        <div class="card">
+          <h4>You owe</h4>
+          <p>₹0</p>
+        </div>
+      </section>
+
+      <!-- Activity -->
+      <section>
+        <h3>Recent Activity</h3>
+        <ul class="list">
+          {% for e in expenses %}
+          <li>{{ e.description }} – ₹{{ e.amount }}</li>
+          {% else %}
+          <li>No activity yet.</li>
+          {% endfor %}
+        </ul>
+      </section>
+
+      <!-- Groups -->
+      <section>
+        <h3>Groups</h3>
+        <ul class="list">
+          {% for g in groups %}
+          <li>
+            <a href="/group/{{ g.id }}">{{ g.name }}</a>
+          </li>
+          {% else %}
+          <li>No groups created.</li>
+          {% endfor %}
+        </ul>
+      </section>
+
+      <!-- Friends -->
+      <section>
+        <h3>Friends</h3>
+        <ul class="list">
+          {% for f in friends %}
+          <li>{{ f.name }}</li>
+          {% else %}
+          <li>No friends added.</li>
+          {% endfor %}
+        </ul>
+      </section>
+    </main>
+
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
+  </body>
+</html>
