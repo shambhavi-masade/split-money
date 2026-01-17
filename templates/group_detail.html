@@ -22,6 +22,15 @@
         <button>Add</button>
       </form>
 
+      <h3>Group Members</h3>
+      <ul>
+        {% for m in members %}
+        <li>{{ m.name }}</li>
+        {% else %}
+        <li>No members yet</li>
+        {% endfor %}
+      </ul>
+
       <h3>Add Expense</h3>
       <form method="POST" action="/group/{{ group.id }}/add-expense">
         <input
@@ -77,6 +86,20 @@
         {% else %}
         <li>{{ s.name }} is settled</li>
         {% endif %} {% endfor %}
+      </ul>
+
+      <hr />
+
+      <h3>Your Balance With Members</h3>
+
+      <ul>
+        {% for f in per_friend %} {% if f.type == "you_owe" %}
+        <li>You owe {{ f.name }} ₹{{ f.amount }}</li>
+        {% elif f.type == "owes_you" %}
+        <li>{{ f.name }} owes you ₹{{ f.amount }}</li>
+        {% endif %} {% else %}
+        <li>You are settled with everyone 🎉</li>
+        {% endfor %}
       </ul>
 
       <br />

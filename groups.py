@@ -13,6 +13,7 @@ def add_group():
 
     group_name = request.form["group_name"]
     members = request.form.getlist("members")  # user_ids
+    creator_id = session["user_id"]
 
     conn = get_db_connection()
     cursor = conn.cursor()
@@ -24,12 +25,19 @@ def add_group():
     )
     group_id = cursor.lastrowid
 
-    # Add members to group
+    # Add creator to group
+    cursor.execute(
+        "INSERT INTO group_members (group_id, user_id) VALUES (%s, %s)",
+        (group_id, creator_id)
+    )
+
+    # Add selected members
     for user_id in members:
-        cursor.execute(
-            "INSERT INTO group_members (group_id, user_id) VALUES (%s, %s)",
-            (group_id, user_id)
-        )
+        if int(user_id) != creator_id:
+            cursor.execute(
+                "INSERT INTO group_members (group_id, user_id) VALUES (%s, %s)",
+                (group_id, user_id)
+            )
 
     conn.commit()
     cursor.close()
@@ -59,7 +67,7 @@ def group_detail(group_id):
     group = cursor.fetchone()
 
     # -------------------------------
-    # Group members (USERS)
+    # Group members
     # -------------------------------
     cursor.execute("""
         SELECT u.id, u.name
@@ -70,7 +78,7 @@ def group_detail(group_id):
     members = cursor.fetchall()
 
     # -------------------------------
-    # Expenses (ID for logic + name for display)
+    # Expenses
     # -------------------------------
     cursor.execute("""
         SELECT 
@@ -97,11 +105,9 @@ def group_detail(group_id):
     for e in expenses:
         share = e["amount"] / member_count
 
-        # everyone owes their share
         for m in members:
             balances[m["id"]] -= share
 
-        # payer gets full amount back
         balances[e["paid_by_id"]] += e["amount"]
 
     settlements = []
@@ -111,12 +117,46 @@ def group_detail(group_id):
             "balance": round(balances[m["id"]], 2)
         })
 
+    # -------------------------------
+    # Per-friend balances (for logged-in user)
+    # -------------------------------
+    current_user_id = session["user_id"]
+    my_balance = balances.get(current_user_id, 0)
+    per_friend = []
+
+    for m in members:
+        if m["id"] == current_user_id:
+            continue
+
+        friend_balance = balances[m["id"]]
+
+        # I owe friend
+        if my_balance < 0 and friend_balance > 0:
+            amount = min(abs(my_balance), friend_balance)
+            if amount > 0:
+                per_friend.append({
+                    "name": m["name"],
+                    "type": "you_owe",
+                    "amount": round(amount, 2)
+                })
+
+        # Friend owes me
+        elif my_balance > 0 and friend_balance < 0:
+            amount = min(my_balance, abs(friend_balance))
+            if amount > 0:
+                per_friend.append({
+                    "name": m["name"],
+                    "type": "owes_you",
+                    "amount": round(amount, 2)
+                })
+
     return render_template(
         "group_detail.html",
         group=group,
         members=members,
         expenses=expenses,
-        settlements=settlements
+        settlements=settlements,
+        per_friend=per_friend
     )
 
 
@@ -130,7 +170,7 @@ def add_group_expense(group_id):
 
     description = request.form["description"]
     amount = float(request.form["amount"])
-    paid_by = request.form["paid_by"]  # user_id
+    paid_by = request.form["paid_by"]
 
     conn = get_db_connection()
     cursor = conn.cursor()

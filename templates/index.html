@@ -84,14 +84,14 @@
           <h4>Total Expenses</h4>
           <p>₹0</p>
         </div>
-        <div class="card">
-          <h4>You are owed</h4>
-          <p>₹0</p>
-        </div>
-        <div class="card">
-          <h4>You owe</h4>
-          <p>₹0</p>
-        </div>
+        <div class="card clickable" onclick="openModal('oweModal')">
+  <h4>You owe</h4>
+  <p>₹{{ total_owe }}</p>
+</div>
+        <div class="card clickable" onclick="openModal('owedModal')">
+  <h4>You are owed</h4>
+  <p>₹{{ total_owed }}</p>
+</div>
       </section>
 
       <!-- Activity -->
@@ -131,6 +131,39 @@
           {% endfor %}
         </ul>
       </section>
+      <div id="oweModal" class="modal hidden">
+  <div class="modal-content">
+    <h3>You owe</h3>
+
+    <ul>
+      {% for f in you_owe_friends %}
+        <li>You owe {{ f.name }} ₹{{ f.amount }}</li>
+      {% else %}
+        <li>You don’t owe anyone 🎉</li>
+      {% endfor %}
+    </ul>
+
+    <button onclick="closeModal('oweModal')">Close</button>
+  </div>
+</div>
+
+<div id="owedModal" class="modal hidden">
+  <div class="modal-content">
+    <h3>You are owed</h3>
+
+    <ul>
+      {% for f in friends_owe_you %}
+        <li>{{ f.name }} owes you ₹{{ f.amount }}</li>
+      {% else %}
+        <li>No one owes you 🎉</li>
+      {% endfor %}
+    </ul>
+
+    <button onclick="closeModal('owedModal')">Close</button>
+  </div>
+</div>
+
+
     </main>
 
     <script src="{{ url_for('static', filename='app.js') }}"></script>

@@ -5,5 +5,6 @@ def get_db_connection():
         host="localhost",
         user="root",
         password="root",
-        database="expense_splitter"
+        database="expense_splitter",
+        autocommit=True
     )

@@ -4,6 +4,7 @@ from db import get_db_connection
 from expenses import expenses_bp
 from groups import groups_bp
 from auth import auth_bp
+from friends import friends_bp
 
 app = Flask(__name__)
 app.secret_key = "super-secret-key"  # move to env later
@@ -14,6 +15,7 @@ app.secret_key = "super-secret-key"  # move to env later
 app.register_blueprint(auth_bp)
 app.register_blueprint(groups_bp)
 app.register_blueprint(expenses_bp)
+app.register_blueprint(friends_bp)
 
 # -------------------------------
 # Dashboard
